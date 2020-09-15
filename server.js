@@ -1,27 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const router = express.Router();
+const router = require('./network/route');
+const db = require('./db');
+const env = require('node-env-file');
+
+env(__dirname + '/.env');
+
+db(process.env.PORT_MONGO);
 
 let app = express();
-
 app.use(bodyParser.json());
-app.use(router);
+router(app)
 
-router.get('/message', (req, res) => {
-  console.log(req.headers)
-  res.header({
-    "custom-header": "nuestro valor personalizado"
-  })
-  res.send('List message')
-})
-router.post('/message', (req, res) => {
-  console.log(req.query)
-  res.send('Add message')
-})
-/* app.use('/', (req, res) => {
-  res.send('Hola')
-}) */
+app.use('/app', express.static('public'))
 
-app.listen(3000);
+const port = process.env.PORT_SERVER || 3001
 
-console.log('The app is running in the port 3000 ');
+app.listen(port);
+
+console.log(`The app is running in the port: ${port}`);
