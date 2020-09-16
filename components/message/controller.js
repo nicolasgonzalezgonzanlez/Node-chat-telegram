@@ -1,17 +1,26 @@
 const store = require('./store');
 
-function addMessage(user, message) {
+function addMessage(chat, user, message, file) {
   return new Promise ((resolve, reject) => {
-    if (!user || !message) {
+    if (!chat || !user || !message) {
       console.error('[messageController] user or message is not defined')
       return reject('Data is not defined')
     }
+
+    let fileUrl = ''
+
+    if (file) {
+      fileUrl=  `${process.env.SERVER_DEV}/app/files/${file.filename}`
+    }
+    
     const fullMessage = {
+      chat,
       user,
       message,
-      date: new Date()
+      date: new Date(),
+      file: fileUrl
     }
-    console.log(fullMessage)
+    
     store.add(fullMessage)
     resolve(fullMessage)
   })

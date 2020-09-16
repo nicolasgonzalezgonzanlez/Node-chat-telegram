@@ -1,7 +1,7 @@
 const store = require('./store');
 
 function addChat(users) {
-  if(!users) return Promise.reject('Invalid Name')
+  if(!users || !Array.isArray(users)) return Promise.reject('Invalid user list')
 
   const newChat = {
     users
@@ -10,10 +10,8 @@ function addChat(users) {
   return store.add(newChat)
 }
 
-function getChat (chat) {
-  return new Promise((resolve, rejact) => {
-    resolve(store.list(chat))
-  })
+function getChat (userId) {
+  return store.list(userId)
 }
 
 module.exports = {

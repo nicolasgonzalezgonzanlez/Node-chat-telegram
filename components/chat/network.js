@@ -13,9 +13,8 @@ router.post('/', (req, res) => {
       response.error(req, res, 'Internal error', 500, err)
     })
 })
-router.get('/', (req, res) => {
-  const filterChat = req.query.chat || null
-  controller.getChat(filterChat)
+router.get('/:userId', (req, res) => {
+  controller.getChat(req.params.userId)
     .then(chats => {
       response.success(req, res, chats, 201);
     })

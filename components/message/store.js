@@ -5,12 +5,22 @@ function addMessage (message) {
   myMessage.save()
 }
 
-async function getMessage (filetMessage) {
+async function getMessage (filterMessage) {
   return new Promise((resolve, reject) => {
-      let filter = {}
+
+      let filter = {} 
       //filetMessage params query ?user=nameUser
-      if (filetMessage !== null) {
-        filter = {user: filetMessage}
+      
+      if (filterMessage !== {}) {
+        if (filterMessage.filter === 'chat') {
+          filter = {
+            chat: filterMessage.request
+          }
+        } else if (filterMessage.filter === 'user') {
+          filter = {
+            user: filterMessage.request
+          }
+        }
       }
       //se le pasa un parametro para saber que fiktrar
       Model.find(filter)
