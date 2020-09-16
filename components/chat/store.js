@@ -8,9 +8,9 @@ function addChat (chat) {
 function getChat (userId) {
   return new Promise((resolve, reject) => {
 
-    const filter = {};
+    let filter = {};
 
-    if(chat !== null) {
+    if(filter !== null) {
       filter = {users: userId};
     };
 

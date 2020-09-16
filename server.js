@@ -1,21 +1,31 @@
-const express = require('express');
 const bodyParser = require('body-parser');
+const env = require('node-env-file');
+const cors = require('cors');
+
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const {connect} = require('./socket');
+
 const router = require('./network/route');
 const db = require('./db');
-const env = require('node-env-file');
 
 env(__dirname + '/.env');
 
 db(process.env.PORT_MONGO);
 
-let app = express();
+app.use(cors());
+
 app.use(bodyParser.json());
-router(app)
 
-app.use('/app', express.static('public'))
+connect(server)
+router(app);
 
-const port = process.env.PORT_SERVER || 3001
+app.use('/app', express.static('public'));
 
-app.listen(port);
+const port = process.env.PORT_SERVER || 3001;
 
-console.log(`The app is running in the port: ${port}`);
+server.listen(port, () => {
+  console.log(`The app is running in the port: ${port}`);
+});
+
